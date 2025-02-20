@@ -2,7 +2,7 @@
 
     
 import json
-with open("/Users/shagyrnurlybek/Documents/GitHub/PP2/LAB04/JSON/sample-data.json", "r") as f:
+with open("Lab4/JSON/sample-data.json", "r") as f:
     data = json.load(f)
 
 for item in data["imdata"]:
