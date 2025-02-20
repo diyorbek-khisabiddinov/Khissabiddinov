@@ -1,0 +1,21 @@
+class Calculator:
+    def add(self, a, b):
+        return a + b
+
+    def subtract(self, a, b):
+        return a - b
+
+    def multiply(self, a, b):
+        return a * b
+
+    def divide(self, a, b):
+        if b == 0:
+            return "Error! Division by zero."
+        return a / b
+
+# Example usage:
+calc = Calculator()
+print(calc.add(5, 3))       # Output: 8
+print(calc.subtract(10, 4)) # Output: 6
+print(calc.multiply(6, 7))  # Output: 42
+print(calc.divide(8, 2))    # Output: 4.0
