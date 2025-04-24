@@ -1,0 +1,37 @@
+CREATE OR REPLACE FUNCTION get_records(pattern TEXT)
+RETURNS TABLE(id INT, user_name TEXT, phone TEXT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT pb.id, pb.user_name::TEXT, pb.phone::TEXT
+    FROM PhoneBook pb
+    WHERE pb.user_name ILIKE '%' || pattern || '%'
+       OR pb.phone ILIKE '%' || pattern || '%';
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE PROCEDURE upsert(new_user_name TEXT, new_phone TEXT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM PhoneBook WHERE user_name = new_user_name) THEN
+        UPDATE PhoneBook
+        SET phone = new_phone
+        WHERE user_name = new_user_name;
+    ELSE
+        INSERT INTO PhoneBook (user_name, phone)
+        VALUES (new_user_name, new_phone);
+    END IF;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE deleting(name_del text, phone_del text)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM PhoneBook WHERE user_name = name_del) THEN
+        DELETE FROM PhoneBook WHERE user_name = name_del AND phone = phone_del;
+    ELSE
+        RAISE NOTICE 'Does not exist';
+    END IF;
+END;
+$$;
